@@ -19,3 +19,6 @@ El navegador por dentro estructura las etiquetas html para que puedas manipular 
 
 https://platzi.com/blog/etiquetas-html-debes-conocer/
 
+Manipular le dom 
+https://developer.mozilla.org/es/docs/Web/API/Element/innerHTML
+
