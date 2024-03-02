@@ -4,35 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miscritspon</title>
-    <script src="js/miscrits.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
     <!--Dividir las secciones de nuestra página-->
     <section id="seleccionar-mascota">
         <h1 class="titulo">Miscritspon</h1>
-
         <h2 class="subtitulo">Elige tu criatura para luchar:</h2>
-        
-        <div class="tarjetas">
-            <input type="radio" name="criatura" id="darment"/>
-            <label class="tarjeta-de-miscrits" for="darment">
-                <p>Darment</p>
-                <img src="assets/darment.png" alt="darment">
-            </label>
-            
-            <input type="radio" name="criatura" id="droconos"/>
-            <label class="tarjeta-de-miscrits" for="droconos">
-                <p>Droconos</p>
-                <img src="assets/droconos.png" alt="droconos">
-            </label>
-            
-            <input type="radio" name="criatura" id="leviant"/>
-            <label class="tarjeta-de-miscrits" for="leviant">
-                <p>Leviant</p>
-                <img src="assets/leviant.png" alt="leviant">
-            </label>
+
+        <div id="contenedor-tarjetas" class="tarjetas">
         </div>
+
         <button class="tarjeta-boton" id="boton-mascota">Seleccionar</button>
     </section>
     
@@ -53,10 +35,8 @@
 
         <h2 class="subtitulo">Elige tu ataque:</h2>
 
-            <div class="tarjetas-ataques">
-                <button id="boton-fuego" class="boton-de-ataque">Fuego 🔥</button>
-                <button id="boton-agua" class="boton-de-ataque">Agua 💧</button>
-                <button id="boton-tierra" class="boton-de-ataque">Tierra 🌱</button>
+            <div id="contenedor-ataques" class="tarjetas-ataques">
+                
             </div>
 
             <div id="mensajes">
@@ -68,16 +48,17 @@
 
             <div class="ataques">
                 <div class="ataques-jugador">
+                    <p id="vidas-jugador">0</p>
                     <p id="nombre-criatura-jugador"></p>
-                    <p id="vidas-jugador">3</p>
                     <div id="ataques-del-jugador"></div>
                 </div>
                 <div class="ataques-enemigo">
+                    <p id="vidas-enemigo">0</p>
                     <p id="nombre-criatura-enemigo"></p>
-                    <p id="vidas-enemigo">3</p>
                     <div id="ataques-del-enemigo"></div>
                 </div>
             </div>
     </section>
+    <script src="js/miscrits-copy.js"></script>
 </body>
 </html>

@@ -31,6 +31,8 @@ let opcionDeMiscrits
 let inputDarment
 let inputDroconos
 let inputLeviant
+let inputArcane
+let inputDeswins
 let mascotaJugador
 let ataquesMiscrits
 let ataquesMicristEnemigo
@@ -43,6 +45,9 @@ let indexAtaqueEnemigo
 let victoriasJugador = 0
 let victoriasEnemigo = 0
 
+let nombreMascotaEnemiga
+
+let ataquesNewEnemigo = []
 //nuestra clase
 class MiscritsPon {
     constructor(nombre, foto, vida){
@@ -88,7 +93,22 @@ leviant.ataques.push(
     { nombre : '💧', id: 'boton-agua' },
 )
 
-miscritsPon.push(darment, droconos, leviant)
+arcane.ataques.push(
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '💧', id: 'boton-agua' },
+)
+deswins.ataques.push(
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🔥', id: 'boton-fuego' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🔥', id: 'boton-fuego' },
+)
+
+miscritsPon.push(darment, droconos, leviant, arcane, deswins)
 
 
 function iniciarJuego(){
@@ -111,6 +131,8 @@ function iniciarJuego(){
         inputDarment = document.getElementById('Darment')
         inputDroconos = document.getElementById('Droconos')
         inputLeviant = document.getElementById('Leviant')
+        inputArcane = document.getElementById('Arcane')
+        inputDeswins = document.getElementById('Deswins')
     })
 
     botonMascotaJugador.addEventListener('click', selecionarMascotaJugador)
@@ -139,6 +161,18 @@ function selecionarMascotaJugador(){
         spanMascotaJugador.innerHTML = inputLeviant.id  
         mascotaJugador = inputLeviant.id
         imagenCriaturaJugador.src = 'assets/leviant.png';
+        document.querySelector('#mascota-jugador').appendChild(imagenCriaturaJugador);
+        document.querySelector('#logo-vs').appendChild(imagenLogoVs);
+    }else if (inputArcane.checked){
+        spanMascotaJugador.innerHTML = inputArcane.id  
+        mascotaJugador = inputArcane.id
+        imagenCriaturaJugador.src = 'assets/arcane.png';
+        document.querySelector('#mascota-jugador').appendChild(imagenCriaturaJugador);
+        document.querySelector('#logo-vs').appendChild(imagenLogoVs);
+    }else if (inputDeswins.checked){
+        spanMascotaJugador.innerHTML = inputDeswins.id  
+        mascotaJugador = inputDeswins.id
+        imagenCriaturaJugador.src = 'assets/deswins.png';
         document.querySelector('#mascota-jugador').appendChild(imagenCriaturaJugador);
         document.querySelector('#logo-vs').appendChild(imagenLogoVs);
     }else{
@@ -203,8 +237,10 @@ function secuenciaAtaque() {
 }
 
 function selecionarMascotaEnemigo() {
-    let imagenCriaturaEnemigo = new Image(150)
     let mascotaAletorio = aleatorio(0, miscritsPon.length - 1)
+    nombreMascotaEnemiga = mascotaAletorio
+    let imagenCriaturaEnemigo = new Image(150)
+    
     setcionSelecionarMascota.style.display = 'none'
 
     spanMascotaEnemigo.innerHTML = miscritsPon[mascotaAletorio].nombre
@@ -216,17 +252,33 @@ function selecionarMascotaEnemigo() {
 }
 
 function ataqueEnemigoAleatorio(){
-    //Aqui los ataques no importa si se aumenta más ataques
+    
+    //Aqui se obtiene el nombre de la mascota del enemigo aleatorio
+    let id = nombreMascotaEnemiga
+    //Ataque aleatorio
     let ataqueAletorio = aleatorio(0, ataquesMicristEnemigo.length - 1)
-    //selecionar una de los arreglos que tiene el enemigo
-    if(ataqueAletorio == 0 || ataqueAletorio == 1){
-        ataqueEnemigo.push('FUEGO')
-    }else if(ataqueAletorio == 3 || ataqueAletorio == 4){
-        ataqueEnemigo.push('AGUA')
-    }else{
-        ataqueEnemigo.push('TIERRA')
+    //Quiero obtener lso ataques del enemigo selecionado
+    for (let i = 0; i < miscritsPon.length; i++) {
+        if(nombreMascotaEnemiga == i){
+            ataquesNewEnemigo = miscritsPon[i].ataques
+            console.log(ataquesNewEnemigo)
+        }
     }
-    console.log(ataqueEnemigo)
+    //los ataques aleatorio no se repitan
+    for (let i = 0; i < ataquesNewEnemigo.length; i++) {
+        if (i === ataqueAletorio) {
+            if(ataquesNewEnemigo[i].nombre == '🔥'){
+                ataqueEnemigo.push('FUEGO')
+            }else if(ataquesNewEnemigo[i].nombre == '💧'){
+                ataqueEnemigo.push('AGUA')
+            }else{
+                ataqueEnemigo.push('TIERRA')
+            }
+            console.log(ataqueEnemigo);
+            ataquesNewEnemigo.splice(ataqueAletorio, 1); // Eliminar el ataque seleccionado del array original
+            break; // Salir del bucle una vez que se ha agregado el ataque aleatorio
+        }
+    }
     iniciarPelea()
 }
 
