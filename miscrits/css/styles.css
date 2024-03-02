@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300&display=swap');
+
+body{
+    font-family: "Frank Ruhl Libre", serif;
+    /*background-color: #A7D397;*/
+    background-image: url('../assets/fondo2.jpg');
+    background-position: center;
+    background-size: cover;/*para abarcar toda la pag*/
+    background-repeat: no-repeat;
+    background-attachment: fixed;/*para abarcar toda la pag*/
+}
+
+#seleccionar-mascota{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo{
+    color: #79C00D;
+    font-size: 40px;
+}
+
+.subtitulo{
+    color: white;
+    font-size: 24px;
+}
+
+.tarjetas, .tarjetas-ataques{
+    display: flex;
+    gap: 10px;/*añadir espaciados*/
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tarjeta-de-miscrits{
+    width: 240px;
+    height: 230px;
+    background: #EBE1AD;
+    padding: 10px;
+    box-sizing: border-box;/*para que el padding no modifique el boton*/
+    border-radius: 50px;
+    margin: 10px;
+    display: flex;
+    border: 6px solid white;
+    cursor: pointer;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/*quiero que la imagen tenga los siguientes estilos*/
+.tarjetas img {
+    width: 180px;
+    height: 140px;
+}
+
+input:checked+label {
+    background: rgb(63, 88, 199);
+    color: #fff;
+}
+
+#boton-mascota {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    color: white;
+    width: 180px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid white;
+    background-color: #79C00D;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+#boton_mascota:hover {
+    background: rgb(63, 88, 199);
+    color: #fff;
+    cursor: pointer;
+}
+
+input {
+    display: none;
+}
+
+#seleccionar-ataque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/*  */
+
+
+.ataques1 {
+    background-image: url('../assets/fondo-templo.jpg');
+    background-position: center;
+    background-size: cover;/*para abarcar toda la pag*/
+    background-attachment: local;/*para abarcar toda la pag*/
+    display: flex; /* Cambiar a un contenedor de flexbox */
+    width: 50%; /* Asegurar que ocupen todo el ancho disponible */
+    height: 200px;
+}
+
+.ataques-jugador1,
+.ataques-enemigo1,
+.logo {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%; /* Cada contenedor de ataques ocupa la mitad del ancho del contenedor padre */
+}
+
+
+/**/
+.boton-de-ataque {
+    background-color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    cursor: pointer;
+    border-color: dodgerblue;
+    width: 40px;
+    margin-right: 10px;
+}
+
+#mensajes {
+    width: 280px;
+    color: white;
+    font-size: 16px;
+    background: #EF7238;
+    border-radius: 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px
+}
+
+#boton-reiniciar {
+    border: none;
+    font-size: 15px;
+    color: #000000;
+    cursor: pointer;
+    background: #EF7238;
+    padding: 10px;
+}
+
+#boton-reiniciar:hover {
+    color: dodgerblue;
+}
+
+.ataques{
+    display: grid;
+    /* Crear 2 columnas */
+    grid-template-columns: 100px 100px; 
+    color: white;
+}
+  
+#vidas-jugador, #vidas-enemigo {
+    font-size: 32px;
+    margin: 5px
+}
+
+.ataques-jugador, .ataques-enemigo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Los media querys nos ayudaran a ajustar en diferentes dispositivos */
+/* Hasta dispositivos desde 0 hasta 360px */
+@media (max-width: 400px){
+    .tarjetas, .tarjetas-ataques{
+        flex-direction: column;
+    }
+    .ataques1 {
+        width: 100%; /* Asegurar que ocupen todo el ancho disponible */
+    }
+}
+
