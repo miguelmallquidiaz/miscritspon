@@ -3,12 +3,14 @@
 
 body{
     font-family: "Frank Ruhl Libre", serif;
-    /*background-color: #A7D397;*/
-    background-image: url('../assets/fondo2.jpg');
-    background-position: center;
-    background-size: cover;/*para abarcar toda la pag*/
-    background-repeat: no-repeat;
-    background-attachment: fixed;/*para abarcar toda la pag*/
+    background-color: #231955;
+    /* background-image: url('../assets/fondo2.jpg'); */
+    /* background-position: center; */
+    /*para abarcar toda la pag*/
+    /* background-size: cover; */
+    /* background-repeat: no-repeat; */
+    /* background-attachment: fixed; */
+    /*para abarcar toda la pag*/
 }
 
 #seleccionar-mascota{
@@ -20,6 +22,7 @@ body{
 
 .titulo{
     color: #79C00D;
+    margin: 0px;
     font-size: 40px;
 }
 
@@ -36,8 +39,8 @@ body{
 }
 
 .tarjeta-de-miscrits{
-    width: 240px;
-    height: 230px;
+    width: 200px;
+    height: 140px;
     background: #EBE1AD;
     padding: 10px;
     box-sizing: border-box;/*para que el padding no modifique el boton*/
@@ -53,8 +56,8 @@ body{
 
 /*quiero que la imagen tenga los siguientes estilos*/
 .tarjetas img {
-    width: 180px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
 }
 
 input:checked+label {
@@ -170,6 +173,17 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#ver-mapa {
+    /* Colocar los elementos uno de bajo de otro */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mapa {
+    border: 2px solid white;
 }
 
 /* Los media querys nos ayudaran a ajustar en diferentes dispositivos */
