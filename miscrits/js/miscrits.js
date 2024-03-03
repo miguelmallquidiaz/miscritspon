@@ -12,8 +12,6 @@ const setcionSelecionarMascota = document.getElementById('seleccionar-mascota')
 
 const spanMascotaEnemigo = document.getElementById('nombre-criatura-enemigo')
 
-
-
 const spanVidasJugador = document.getElementById('vidas-jugador')
 const spanVidasEnemigo = document.getElementById('vidas-enemigo')
 
@@ -23,6 +21,9 @@ const ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
 const contenedorTarjetas = document.getElementById('contenedor-tarjetas')
 const contenedorAtaques = document.getElementById('contenedor-ataques')
 
+const sectionVerMapa = document.getElementById('ver-mapa')
+const mapa = document.getElementById('mapa')
+
 //guardar diferentes valores
 let miscritsPon = []
 let ataqueJugador = []
@@ -31,36 +32,66 @@ let opcionDeMiscrits
 let inputDarment
 let inputDroconos
 let inputLeviant
+let inputArcane
+let inputDeswins
 let mascotaJugador
+let mascotaJugadorObjeto
 let ataquesMiscrits
 let ataquesMicristEnemigo
 let botonTierra
 let botonFuego
 let botonAgua
+let botonPlanta
 let botones = []
 let indexAtaqueJugador
 let indexAtaqueEnemigo
 let victoriasJugador = 0
 let victoriasEnemigo = 0
+let ataquesNewEnemigo = []
+
+// utilizar el lienzo para dibujar en canvas
+let lienzo = mapa.getContext("2d")
+let intervalo
+let mapaBackground = new Image()
+mapaBackground.src = 'assets/mapa.jpg'
 
 //nuestra clase
 class MiscritsPon {
-    constructor(nombre, foto, vida){
+    constructor(nombre, foto, vida, fotoMapa, x = 10, y = 10){
         //variable interna que guarda un valor
         this.nombre = nombre;
         this.foto = foto;
         this.vida = vida;
-        this.ataques = []
+        this.ataques = [];
+        this.x = x
+        this.y = y
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = fotoMapa
+        this.velocidadX = 0
+        this.velocidadY = 0
+    }
+    pintarMiscritspon(){
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
     }
 }
 //creando nuevos objeto
-let darment = new MiscritsPon('Darment', 'assets/darment.png', 10)
-let droconos = new MiscritsPon('Droconos', 'assets/droconos.png', 9)
-let leviant = new MiscritsPon('Leviant', 'assets/leviant.png', 6)
-let arcane = new MiscritsPon('Arcane', 'assets/arcane.png', 10)
-let deswins = new MiscritsPon('Deswins', 'assets/deswins.png', 8)
-let gaolan = new MiscritsPon('Gaolan', 'assets/gaolan.png', 9)
-let towa = new MiscritsPon('Towa', 'assets/towa.png', 6)
+let darment = new MiscritsPon('Darment', 'assets/darment.png', 10, 'assets/darment-icon.png')
+let droconos = new MiscritsPon('Droconos', 'assets/droconos.png', 9, 'assets/droconos-icon.png')
+let leviant = new MiscritsPon('Leviant', 'assets/leviant.png', 6, 'assets/leviant-icon.png')
+let arcane = new MiscritsPon('Arcane', 'assets/arcane.png', 10, 'assets/arcane-icon.png')
+let deswins = new MiscritsPon('Deswins', 'assets/deswins.png', 8, 'assets/deswins-icon.png')
+let gaolan = new MiscritsPon('Gaolan', 'assets/gaolan.png', 9, 'assets/darment-icon.png')
+let towa = new MiscritsPon('Towa', 'assets/towa.png', 6, 'assets/towa-icon.png')
+let leviantEnemigo = new MiscritsPon('Leviant', 'assets/leviant.png', 6, 'assets/leviant-icon.png', 280, 120)
+let arcaneEnemigo = new MiscritsPon('Arcane', 'assets/arcane.png', 10, 'assets/arcane-icon.png', 180, 50)
 //agregando en el arreglo
 //traer el nombre de la propiedad que necesitas, agregar valores a los ataques
 //objetos literales no tengo clase solo van a guardan información
@@ -69,7 +100,7 @@ darment.ataques.push(
     { nombre : '🔥', id: 'boton-fuego' },
     { nombre : '💧', id: 'boton-agua' },
     { nombre : '💧', id: 'boton-agua' },
-    { nombre : '🔥', id: 'boton-fuego' },
+    { nombre : '🍃', id: 'boton-planta' },
 )
 
 droconos.ataques.push(
@@ -77,7 +108,7 @@ droconos.ataques.push(
     { nombre : '🌱', id: 'boton-tierra' },
     { nombre : '🔥', id: 'boton-fuego' },
     { nombre : '🔥', id: 'boton-fuego' },
-    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🍃', id: 'boton-planta' },
 )
 
 leviant.ataques.push(
@@ -88,12 +119,45 @@ leviant.ataques.push(
     { nombre : '💧', id: 'boton-agua' },
 )
 
-miscritsPon.push(darment, droconos, leviant)
+leviantEnemigo.ataques.push(
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '💧', id: 'boton-agua' },
+)
+
+arcane.ataques.push(
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '💧', id: 'boton-agua' },
+)
+
+arcaneEnemigo.ataques.push(
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '💧', id: 'boton-agua' },
+)
+
+deswins.ataques.push(
+    { nombre : '💧', id: 'boton-agua' },
+    { nombre : '🍃', id: 'boton-planta' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🌱', id: 'boton-tierra' },
+    { nombre : '🍃', id: 'boton-planta' },
+)
+
+miscritsPon.push(darment, droconos, leviant, arcane, deswins)
 
 
 function iniciarJuego(){
+    //Ocultar las setcion
     setcionSelecionarAtaque.style.display = 'none'
-    // sectionReiniciar.style.display = 'none'
+    sectionVerMapa.style.display = 'none'
     
     //recorer cada arreglo interar
     miscritsPon.forEach((criatura) => {
@@ -111,6 +175,8 @@ function iniciarJuego(){
         inputDarment = document.getElementById('Darment')
         inputDroconos = document.getElementById('Droconos')
         inputLeviant = document.getElementById('Leviant')
+        inputArcane = document.getElementById('Arcane')
+        inputDeswins = document.getElementById('Deswins')
     })
 
     botonMascotaJugador.addEventListener('click', selecionarMascotaJugador)
@@ -120,7 +186,7 @@ function iniciarJuego(){
 function selecionarMascotaJugador(){
     let imagenCriaturaJugador = new Image(150)
     sectionSeleccionarMascota.style.display = 'none'
-    setcionSelecionarAtaque.style.display = 'flex'
+    sectionVerMapa.style.display = 'flex'
     imagenLogoVs.src = 'assets/logo-versus.png';
 
     if(inputDarment.checked){
@@ -141,13 +207,25 @@ function selecionarMascotaJugador(){
         imagenCriaturaJugador.src = 'assets/leviant.png';
         document.querySelector('#mascota-jugador').appendChild(imagenCriaturaJugador);
         document.querySelector('#logo-vs').appendChild(imagenLogoVs);
+    }else if (inputArcane.checked){
+        spanMascotaJugador.innerHTML = inputArcane.id  
+        mascotaJugador = inputArcane.id
+        imagenCriaturaJugador.src = 'assets/arcane.png';
+        document.querySelector('#mascota-jugador').appendChild(imagenCriaturaJugador);
+        document.querySelector('#logo-vs').appendChild(imagenLogoVs);
+    }else if (inputDeswins.checked){
+        spanMascotaJugador.innerHTML = inputDeswins.id  
+        mascotaJugador = inputDeswins.id
+        imagenCriaturaJugador.src = 'assets/deswins.png';
+        document.querySelector('#mascota-jugador').appendChild(imagenCriaturaJugador);
+        document.querySelector('#logo-vs').appendChild(imagenLogoVs);
     }else{
         setcionSelecionarAtaque.style.display = 'none'
         alert('Seleccione una mascota')
         reiniciarJuego()
     }
+    iniciarMapa()
     extraerAtaques(mascotaJugador)
-    selecionarMascotaEnemigo()
 }
 
 function extraerAtaques(mascotaJugador){
@@ -172,9 +250,9 @@ function mostrarAtaques(ataques) {
     botonTierra = document.getElementById('boton-tierra')
     botonFuego = document.getElementById('boton-fuego')
     botonAgua = document.getElementById('boton-agua')
+    botonPlanta = document.getElementById('boton-planta')
     //Selecionan todos los elementos que se generen
     botones = document.querySelectorAll('.btnAtaque')
-    console.log(botones)
 }
 
 function secuenciaAtaque() {
@@ -191,6 +269,11 @@ function secuenciaAtaque() {
                 console.log(ataqueJugador)
                 boton.style.background = '#122f58'
                 boton.disabled = true
+            }else if(e.target.textContent == '🍃'){
+                ataqueJugador.push('PLANTA')
+                console.log(ataqueJugador)
+                boton.style.background = '#122f58'
+                boton.disabled = true
             }else{
                 ataqueJugador.push('TIERRA')
                 console.log(ataqueJugador)
@@ -202,31 +285,42 @@ function secuenciaAtaque() {
     })
 }
 
-function selecionarMascotaEnemigo() {
+function selecionarMascotaEnemigo(enemigo) {
+    // let mascotaAletorio = aleatorio(0, miscritsPon.length - 1)
+    ataquesNewEnemigo = enemigo.ataques
     let imagenCriaturaEnemigo = new Image(150)
-    let mascotaAletorio = aleatorio(0, miscritsPon.length - 1)
+    
     setcionSelecionarMascota.style.display = 'none'
-
-    spanMascotaEnemigo.innerHTML = miscritsPon[mascotaAletorio].nombre
-    imagenCriaturaEnemigo.src = miscritsPon[mascotaAletorio].foto
+    // spanMascotaEnemigo.innerHTML = miscritsPon[mascotaAletorio].nombre
+    spanMascotaEnemigo.innerHTML = enemigo.nombre
+    // imagenCriaturaEnemigo.src = miscritsPon[mascotaAletorio].foto
+    imagenCriaturaEnemigo.src = enemigo.foto
     document.querySelector('#mascota-enemigo').appendChild(imagenCriaturaEnemigo)
 
-    ataquesMicristEnemigo = miscritsPon[mascotaAletorio].ataques
+    // ataquesMicristEnemigo = miscritsPon[mascotaAletorio].ataques
+    ataquesMicristEnemigo = enemigo.ataques
     secuenciaAtaque()
 }
 
 function ataqueEnemigoAleatorio(){
-    //Aqui los ataques no importa si se aumenta más ataques
     let ataqueAletorio = aleatorio(0, ataquesMicristEnemigo.length - 1)
-    //selecionar una de los arreglos que tiene el enemigo
-    if(ataqueAletorio == 0 || ataqueAletorio == 1){
-        ataqueEnemigo.push('FUEGO')
-    }else if(ataqueAletorio == 3 || ataqueAletorio == 4){
-        ataqueEnemigo.push('AGUA')
-    }else{
-        ataqueEnemigo.push('TIERRA')
+    //los ataques aleatorio no se repitan
+    for (let i = 0; i < ataquesNewEnemigo.length; i++) {
+        if (i === ataqueAletorio) {
+            if(ataquesNewEnemigo[i].nombre == '🔥'){
+                ataqueEnemigo.push('FUEGO')
+            }else if(ataquesNewEnemigo[i].nombre == '💧'){
+                ataqueEnemigo.push('AGUA')
+            }else if(ataquesNewEnemigo[i].nombre == '🌱'){
+                ataqueEnemigo.push('TIERRA')
+            }else{
+                ataqueEnemigo.push('PLANTA')
+            }
+            console.log(ataqueEnemigo);
+            ataquesNewEnemigo.splice(ataqueAletorio, 1); // Eliminar el ataque seleccionado del array original
+            break; // Salir del bucle una vez que se ha agregado el ataque aleatorio
+        }
     }
-    console.log(ataqueEnemigo)
     iniciarPelea()
 }
 
@@ -245,30 +339,32 @@ function indexAmbosOponentes(jugador, enemigo){
 }
 
 function resultadoCombate(){
+    
     for (let i = 0; i < ataqueJugador.length; i++) {
         // console.log(ataqueJugador[i])
+        
         //validando si esta ganando o no
         if(ataqueJugador[i] == ataqueEnemigo[i]){
             indexAmbosOponentes(i, i)
             crearMensaje("EMPATE")
-            victoriasJugador++
-            spanVidasEnemigo.innerHTML = victoriasJugador
-        }else if(ataqueJugador[i] == 'TIERRA' && ataqueEnemigo[i] == 'FUEGO' || ataqueJugador[i] == 'AGUA' && ataqueEnemigo[i] == 'FUEGO'|| ataqueJugador[i] == 'AGUA' && ataqueEnemigo[i] == 'TIERRA'){
+        }else if(ataqueJugador[i] == 'FUEGO' && ataqueEnemigo[i] == 'PLANTA' ||ataqueJugador[i] == 'PLANTA' && ataqueEnemigo[i] == 'TIERRA' ||ataqueJugador[i] == 'PLANTA' && ataqueEnemigo[i] == 'AGUA' ||ataqueJugador[i] == 'TIERRA' && ataqueEnemigo[i] == 'FUEGO' || ataqueJugador[i] == 'AGUA' && ataqueEnemigo[i] == 'FUEGO'|| ataqueJugador[i] == 'AGUA' && ataqueEnemigo[i] == 'TIERRA'){
             indexAmbosOponentes(i, i)
             crearMensaje("GANASTE")
             victoriasJugador++
-            spanVidasEnemigo.innerHTML = victoriasJugador
+            spanVidasJugador.innerHTML = victoriasJugador
         }else{
             indexAmbosOponentes(i, i)
             crearMensaje("PERDISTE")
             victoriasEnemigo++
-            spanVidasJugador.innerHTML = victoriasEnemigo
+            spanVidasEnemigo.innerHTML = victoriasEnemigo
         }
     }
     revisarVidas()
 }
 
 function revisarVidas(){
+    console.log(victoriasEnemigo)
+        console.log(victoriasJugador)
     if(victoriasJugador == victoriasEnemigo){
         CrearMensajeFinal('Es un empate')
     }else if(victoriasJugador > victoriasEnemigo){
@@ -303,6 +399,120 @@ function reiniciarJuego(){
 
 function aleatorio(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+function pintarCanvas(){
+    //el objeto completo de la mascota
+    mascotaJugadorObjeto.x = mascotaJugadorObjeto.x + mascotaJugadorObjeto.velocidadX
+    mascotaJugadorObjeto.y = mascotaJugadorObjeto.y + mascotaJugadorObjeto.velocidadY
+    // Que pare del canvas a limpiar
+    lienzo.clearRect(0, 0, mapa.width, mapa.height)
+    lienzo.drawImage(
+        mapaBackground,
+        0,
+        0,
+        mapa.width,
+        mapa.height
+    )
+    mascotaJugadorObjeto.pintarMiscritspon()
+    leviantEnemigo.pintarMiscritspon()
+    arcaneEnemigo.pintarMiscritspon()
+
+    if(mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0){
+        revisarColisiones (arcaneEnemigo)
+        revisarColisiones (leviantEnemigo)
+    }
+}
+
+function obtenerObjetoMascota() {
+    for (let i = 0; i < miscritsPon.length; i++) {
+        if (mascotaJugador === miscritsPon[i].nombre) {
+            return miscritsPon[i]
+        }
+    }
+}
+
+function moverDerecha() {
+    // actualizar la posición en x + y
+    mascotaJugadorObjeto.velocidadX = 5
+}
+function moverIzquierda() {
+    // actualizar la posición en x + y
+    mascotaJugadorObjeto.velocidadX = -5
+}
+function moverAbajo() {
+    // actualizar la posición en x + y
+    mascotaJugadorObjeto.velocidadY = 5
+}
+function moverArriba() {
+    // actualizar la posición en x + y
+    mascotaJugadorObjeto.velocidadY = -5
+}
+
+function detenerMovimiento() {
+    mascotaJugadorObjeto.velocidadX = 0
+    mascotaJugadorObjeto.velocidadY = 0
+}
+
+function sePresionoUnaTecla(event){
+    // Que tecla estamos presionando
+    switch (event.key) {
+        case 'ArrowUp':
+            moverArriba()
+            break
+        case 'ArrowDown':
+            moverAbajo()
+            break
+        case 'ArrowLeft':
+            moverIzquierda()
+            break
+        case 'ArrowRight':
+            moverDerecha()
+            break
+        default:
+            break
+    }
+}
+
+function iniciarMapa() {
+    mapa.width = 360
+    mapa.height = 260
+    mascotaJugadorObjeto = obtenerObjetoMascota(mascotaJugadorObjeto)
+    // console.log(mascotaJugadorObjeto, mascotaJugador)
+    // Recibir el nombre de pintar y en milisegundo cada cuanto va a ejecutar
+    intervalo = setInterval(pintarCanvas, 50)
+    //escuchar los eventos de teclado
+    window.addEventListener('keydown', sePresionoUnaTecla)
+    window.addEventListener('keyup', detenerMovimiento)
+    
+}
+
+function revisarColisiones (enemigo) {
+    const arribaEnemigo = enemigo.y
+    const abajoEnemigo = enemigo.y + enemigo.alto
+    const derechaEnemigo = enemigo.x + enemigo.ancho
+    const izquierdaEnemigo = enemigo.x
+
+    const arribaMascota = mascotaJugadorObjeto.y
+    const abajoMascota = mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto
+    const derechaMascota = mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho
+    const izquierdaMascota = mascotaJugadorObjeto.x
+
+    if(
+        abajoMascota < arribaEnemigo ||
+        arribaMascota > abajoEnemigo ||
+        derechaMascota < izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo
+    ){
+        return;
+    }
+    window.removeEventListener('keydown', sePresionoUnaTecla);
+    window.removeEventListener('keyup', detenerMovimiento);
+    detenerMovimiento()
+    setcionSelecionarAtaque.style.display = 'flex'
+    sectionVerMapa.style.display = 'none'
+    selecionarMascotaEnemigo(enemigo)
+    // alert("Hay colisión con " + enemigo.nombre)
 }
 
 //Nos avisa que se cargo todo el html

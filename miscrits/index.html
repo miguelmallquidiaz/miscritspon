@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miscritspon</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="shortcut icon" href="assets/icon.png"  type="image/x-icon">
 </head>
 <body>
     <!--Dividir las secciones de nuestra página-->
     <section id="seleccionar-mascota">
+        
+        <audio autoplay controls loop>
+            <source src="assets/Calling A Hero.mp3" type="audio/mpeg">
+        </audio>
+
         <h1 class="titulo">Miscritspon</h1>
         <h2 class="subtitulo">Elige tu criatura para luchar:</h2>
 
@@ -18,6 +24,16 @@
         <button class="tarjeta-boton" id="boton-mascota">Seleccionar</button>
     </section>
     
+    <section id="ver-mapa">
+        <h2 class="titulo">Recorre el mapa: </h2>
+        <canvas id="mapa"></canvas>
+        <!-- movimiento continuo -->
+        <button onmouseout="detenerMovimiento()" onmousedown="moverArriba()">Arriba</button>
+        <button onmouseout="detenerMovimiento()" onmousedown="moverIzquierda()">Izquierda</button>
+        <button onmouseout="detenerMovimiento()" onmousedown="moverAbajo()">Abajo</button>
+        <button onmouseout="detenerMovimiento()" onmousedown="moverDerecha()">Derecha</button>
+    </section>
+
     <section id="seleccionar-ataque">
         <h2 class="titulo">Miscritspon</h2>
 
@@ -59,6 +75,6 @@
                 </div>
             </div>
     </section>
-    <script src="js/miscrits-copy.js"></script>
+    <script src="js/miscrits.js"></script>
 </body>
 </html>
