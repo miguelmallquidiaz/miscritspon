@@ -177,6 +177,7 @@ function iniciarJuego(){
     //Ocultar las setcion
     setcionSelecionarAtaque.style.display = 'none'
     sectionVerMapa.style.display = 'none'
+    sectionReiniciar.style.display = 'none'
     //recorer cada arreglo interar
     miscritsPon.forEach((criatura) => {
         //template literarios
