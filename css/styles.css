@@ -90,7 +90,7 @@ input {
 }
 
 .ataques1 {
-    background-image: url('assets/fondo-templo.jpg');
+    background-image: url('../assets/fondo-templo.jpg');
     background-position: center;
     background-size: cover;/*para abarcar toda la pag*/
     background-attachment: local;/*para abarcar toda la pag*/
