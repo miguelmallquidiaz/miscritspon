@@ -2,6 +2,8 @@
 
 ¡Bienvenido! Este proyecto es resultado del aprendizaje en el curso de Programación Básica de Platzi, donde se desarrolló un videojuego.
 
+https://miguelmallquidiaz.github.io/Platzi-programacion-basica/
+
 ## Estructura ✅
 Para este videojuego se utilizó Javascript para implementar la lógica y la manipulación del DOM, se utilizó CSS para darle diseño y que sea responsive. También se utilizó Node.js para que se pueda jugar online en la misma red local.
 
